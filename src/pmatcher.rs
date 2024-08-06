@@ -93,11 +93,13 @@ fn create_patterns_with_hash(patterns: HashMap<String, Vec<String>>) -> Vec<(Reg
  * 创建正则表达式列表，通配符形式转为正则表达式
  */
 fn create_mixed_regex_list(patterns: Vec<&str>) -> Vec<Regex> {
+    //斜杠 / 开头的模式将作为【正则表达式】匹配，否则作为【通配符】匹配
     patterns
         .iter()
         .map(|pattern| {
             let pattern = pattern.trim();
             // println!(">>> {:#?}", pattern);
+            // If the string does not start with `prefix`, returns `None`.
             if let Some(stripped) = pattern.strip_prefix('/') {
                 Regex::new(stripped).unwrap()
             } else {
